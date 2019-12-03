@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
-
+import { Observable, of } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: [ './dashboard.component.styl' ]
+  styleUrls: ['./dashboard.component.styl']
 })
 
 export class DashboardComponent implements OnInit {
-  heroes: Hero[] = [];
+  heroes: Observable<any>;
 
   constructor(private heroService: HeroService) { }
 
@@ -17,8 +17,8 @@ export class DashboardComponent implements OnInit {
     this.getHeroes();
   }
 
-  async getHeroes(){
-    this.heroes=(await this.heroService.getHeroes()).slice(1,5)
-;
+  getHeroes() {
+   this.heroes=this.heroService.getHeroes()
+
   }
 }

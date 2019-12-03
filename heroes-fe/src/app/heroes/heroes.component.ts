@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import {Hero} from '../hero';
+import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
-
+import { Observable } from 'rxjs'
+import { TouchSequence } from '_@types_selenium-webdriver@3.0.16@@types/selenium-webdriver';
 @Component({
   selector: 'app-heroes',
   templateUrl: './heroes.component.html',
   styleUrls: ['./heroes.component.styl']
 })
 export class HeroesComponent implements OnInit {
-  heroes:Hero[];
+  heroes: Observable<any>;
   constructor(
     private heroService: HeroService
   ) { }
@@ -17,26 +18,18 @@ export class HeroesComponent implements OnInit {
     this.getHeroes();
   }
   getHeroes(): void {
-    this.heroService.getHeroes().then(
-      heroes=>{
-        this.heroes=heroes;
-      }
-    )
+    this.heroes = this.heroService.getHeroes()
   }
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
-    this.heroService.addHero(name).then(
-      hero=>{
-        this.heroes.push(hero)
-      }
-    )
+    this.heroService.addHero(name)
   }
   delete(hero: Hero): void {
-    this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero.id).then(res=>{
-      if(res){
+    this.heroService.deleteHero(hero.id).then(res => {
+      if (res) {
         alert("删除成功")
+        console.log("DONE")
       }
     })
   }

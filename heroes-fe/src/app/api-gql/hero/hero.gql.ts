@@ -1,13 +1,12 @@
 import gql from 'graphql-tag';
-
-
-export class HeroDetailInput {
-    id: number;
-    name: string;
-    description: string;
-}
+// import {HeroDetailInput} from '../output'
+// export class HeroDetailInput {
+//     id: number;
+//     name: string;
+//     description: string;
+// }
 export const GET_HEROES = gql`
-query{
+query getHeroes{
     getHeroes{
       id,
       name,
@@ -17,7 +16,7 @@ query{
 `
 
 export const GET_HERO = gql`
-query($id:Int!){
+query getHero($id:Int!){
   getHero(id:$id){
     id,
     name,
@@ -36,16 +35,12 @@ mutation($name:String!){
 }
 `
 export const DELETE_HERO = gql`
-mutation($id:Int!){
+mutation deleteHero($id:Int!){
     deleteHero(id:$id)
 }
 `
 export const UPDATE_HERO = gql`
 mutation ($heroDetail:HeroDetailInput!){
-    updateHero(heroDetail:$heroDetail){
-        id,
-        name,
-        description
-    }
+    updateHero(heroDetail:$heroDetail)
 }
 `

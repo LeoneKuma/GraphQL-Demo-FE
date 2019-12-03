@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Hero } from '../hero';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import {HeroDetailInput} from '../api-gql/hero/hero.gql'
-import { HeroService }  from '../hero.service';
+import { HeroDetailInput } from '../api-gql/output';
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-hero-detail',
@@ -11,7 +11,7 @@ import { HeroService }  from '../hero.service';
   styleUrls: ['./hero-detail.component.styl']
 })
 export class HeroDetailComponent implements OnInit {
-  hero:Hero;
+  hero: Hero;
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
@@ -24,8 +24,8 @@ export class HeroDetailComponent implements OnInit {
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     this.heroService.getHero(id).then(
-      hero=>{
-        this.hero=hero;
+      hero => {
+        this.hero = hero;
       }
     )
   }
@@ -33,13 +33,10 @@ export class HeroDetailComponent implements OnInit {
     this.location.back();
   }
   save(): void {
-    var heroDetail=new HeroDetailInput();
-    heroDetail.id=this.hero.id;
-    heroDetail.name=this.hero.name;
-    heroDetail.description=this.hero.description;
+    const heroDetail: HeroDetailInput = { id: this.hero.id, name: this.hero.name, description: this.hero.description };
     console.log(heroDetail)
     this.heroService.updateHero(heroDetail).then(
-      ()=>{
+      () => {
         this.goBack()
       }
     )

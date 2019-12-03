@@ -3,7 +3,7 @@
 ## Codegen简介
 
 - codegen全称graphql code generator,使用时通常通过@graphql-codegen/cli脚手架。
-- codegen作用是将后台的schema转换成具体的,用ts描述的对象，使用codegen可以同步更新后端所使用到的对象。
+- codegen作用是将后台的schema转换成具体的,用ts描述的类型，使用codegen可以同步更新后端所使用到的对象类型。
 - 文档地址：<https://graphql-code-generator.com/docs/getting-started/>
 
 ## Getting Started
@@ -32,5 +32,4 @@
 5. 删除codegen.yml配置文件中的documents: "src/**/*.graphql"
 
 6. 确保后端schema能正常访问，例如后端demo的schema地址是<http://localhost:3000/graphql>,之后运行脚本
-npm run parsegql,成功的话，可以在src/app/api-gql/output.ts中找到后端graphql schema对应的ts对象，使用时自行导入。
-
+npm run parsegql,成功的话，可以在src/app/api-gql/output.ts中找到后端graphql schema对应的ts对象类型，使用时自行导入。
