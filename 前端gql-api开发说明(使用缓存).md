@@ -102,7 +102,7 @@
   </a>
   ```
 
-- watchQuery()方法返回的是一个包装过的Observable对象，上面说到的valueChanges属性是这个对象的成员变量之一。apollo将这个包装过的Observable对象命名为QueryRef,即QueryRefetch。顾名思义，valueChanges一定和值的变化有关。事实上，这个值指的是cache,当我们的mutation操作改变了cache中的对象时,valueChanges属性内的值，也会随之变化，也就是说，这个变量是响应式的，这也是为什么废弃query,使用watchQuery的原因，query是一次性的，获取的结果不具备响应式的功能，而watchQuery会监视cache。我们通过*ngFor指令展示了一个英雄列表，当我们在其他路径修改了这个列表中某个英雄的名字时，返回英雄列表所在的路径时，对应的英雄名称也会发生变化，英雄列表的维护交由cache完成，我们不需要自己手动地维护一个像是 const heroes:Hero[]这样的数组变量，在每次增删改的时候，对这个数组最一些操作。当然，我们也可以直接访问cache，对其中的内容进行维护，就像对上面说的heroes这个数组一样。
+- watchQuery()方法返回的是一个包装过的Observable对象，上面说到的valueChanges属性是这个对象的成员变量之一。apollo将这个包装过的Observable对象命名为QueryRef,即QueryRefetch。顾名思义，valueChanges一定和值的变化有关。事实上，这个值指的是cache,当我们的mutation操作改变了cache中的对象时,valueChanges属性内的值，也会随之变化，也就是说，这个变量是响应式的，这也是为什么废弃query,使用watchQuery的原因，query是一次性的，获取的结果不具备响应式的功能，而watchQuery会监视cache。我们通过*ngFor指令展示了一个英雄列表，当我们在其他路径修改了这个列表中某个英雄的名字时，返回英雄列表所在的路径时，对应的英雄名称也会发生变化，英雄列表的维护交由cache完成，我们不需要自己手动地维护一个像是 const heroes:Hero[]这样的数组变量，在每次增删改的时候，对这个数组做一些操作。当然，我们也可以直接访问cache，对其中的内容进行维护，就像对上面说的heroes这个数组一样。
 
 - Mutation的Schema
 
