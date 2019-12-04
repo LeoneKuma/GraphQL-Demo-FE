@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Hero } from '../hero';
+import { Hero } from '../api-gql/output';
 import { HeroService } from '../hero.service';
 import { Observable, of } from 'rxjs';
 @Component({
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getHeroes() {
-   this.heroes=this.heroService.getHeroes()
+    this.heroes = this.heroService.getHeroes();
 
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Hero } from './hero';
+
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { GET_HEROES, GET_HERO, ADD_HERO, DELETE_HERO, UPDATE_HERO } from './api-
 import { escapeRegExp } from '@angular/compiler/src/util';
 import { ApolloCurrentResult } from 'apollo-client';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { HeroDetailInput } from './api-gql/output'
+import { HeroDetailInput, Hero } from './api-gql/output'
 @Injectable({
   providedIn: 'root'
 })
@@ -25,30 +25,39 @@ export class HeroService {
     return this.apollo.watchQuery(
       {
         query: GET_HEROES,
-        fetchPolicy: 'network-only',
-      }).valueChanges.pipe(map<any, any>(({ data }) => data.getHeroes));
+      }).valueChanges.pipe(map<any, any>(({ data }) => {
+        const heroes: Hero[] = data.getHeroes;
+        return heroes.filter((item, index) => index >= 1 && index <= 4)
+      }));
   }
 
 
   async getHero(id: number): Promise<Hero> {
-    var res = await this.apollo.query(
+    const res = await this.apollo.watchQuery<any>(
       {
         query: GET_HERO,
         variables: {
-          id: id
+          id
         },
-        fetchPolicy: "network-only"
       }
-    ).toPromise()
-    return res.data["getHero"]
+    ).result();
+    return res.data.getHero;
+
   }
   async deleteHero(id: number): Promise<boolean> {
-    var res = await this.apollo.mutate(
+    const res = await this.apollo.mutate(
       {
         mutation: DELETE_HERO,
         variables: {
           id: id
-        }
+        },
+        update: (proxy, { data }: any) => {
+          const dataCache = proxy.readQuery<any>({ query: GET_HEROES });
+          const heroList: Hero[] = dataCache.getHeroes;
+          // cache中删掉被删除的英雄
+          heroList.filter((hero) => hero.id !== id);
+          proxy.writeQuery({ query: GET_HEROES, data: dataCache });
+        },
       }
     ).toPromise();
     return res.data["deleteHero"]
@@ -58,7 +67,7 @@ export class HeroService {
       {
         mutation: ADD_HERO,
         variables: {
-          name: name
+          name
         },
         update: (proxy, { data }: any) => {
           const dataCache = proxy.readQuery<any>({ query: GET_HEROES });
@@ -70,11 +79,11 @@ export class HeroService {
     return res.data.addHero;
   }
   async updateHero(heroDetail: HeroDetailInput): Promise<boolean> {
-    var res = await this.apollo.mutate<any>(
+    const res = await this.apollo.mutate<any>(
       {
         mutation: UPDATE_HERO,
         variables: {
-          heroDetail: heroDetail
+          heroDetail
         }
       }
     ).toPromise();

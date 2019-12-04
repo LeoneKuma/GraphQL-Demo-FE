@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Hero } from '../hero';
+import { Hero } from '../api-gql/output';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HeroDetailInput } from '../api-gql/output';
 import { HeroService } from '../hero.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-hero-detail',
@@ -21,25 +22,20 @@ export class HeroDetailComponent implements OnInit {
   ngOnInit() {
     this.getHero();
   }
-  getHero(): void {
+  async getHero(): Promise<void> {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.heroService.getHero(id).then(
-      hero => {
-        this.hero = hero;
-      }
-    )
+    this.hero = await this.heroService.getHero(id);
   }
   goBack(): void {
     this.location.back();
   }
   save(): void {
     const heroDetail: HeroDetailInput = { id: this.hero.id, name: this.hero.name, description: this.hero.description };
-    console.log(heroDetail)
     this.heroService.updateHero(heroDetail).then(
       () => {
-        this.goBack()
-      }
-    )
+        this.goBack();
+      })
   }
+
 
 }

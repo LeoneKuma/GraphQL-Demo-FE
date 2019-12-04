@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Hero } from '../hero';
+import { Hero } from '../api-gql/output';
 import { HeroService } from '../hero.service';
 import { Observable } from 'rxjs'
 import { TouchSequence } from '_@types_selenium-webdriver@3.0.16@@types/selenium-webdriver';

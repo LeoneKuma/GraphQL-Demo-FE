@@ -41,6 +41,10 @@ mutation deleteHero($id:Int!){
 `
 export const UPDATE_HERO = gql`
 mutation ($heroDetail:HeroDetailInput!){
-    updateHero(heroDetail:$heroDetail)
+    updateHero(heroDetail:$heroDetail){
+      id,
+      name,
+      description
+    }
 }
 `
