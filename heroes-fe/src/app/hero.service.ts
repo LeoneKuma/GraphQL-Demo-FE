@@ -21,13 +21,14 @@ export class HeroService {
     private apollo: Apollo
   ) { }
 
-  getHeroes(): Observable<any> {
+  getHeroes(num: number = 100): Observable<any> {
     return this.apollo.watchQuery(
       {
         query: GET_HEROES,
+        fetchPolicy: 'network-only'
       }).valueChanges.pipe(map<any, any>(({ data }) => {
         const heroes: Hero[] = data.getHeroes;
-        return heroes.filter((item, index) => index >= 1 && index <= 4)
+        return heroes.filter((item, index) => index >= 0 && index <= num)
       }));
   }
 
@@ -55,7 +56,8 @@ export class HeroService {
           const dataCache = proxy.readQuery<any>({ query: GET_HEROES });
           const heroList: Hero[] = dataCache.getHeroes;
           // cache中删掉被删除的英雄
-          heroList.filter((hero) => hero.id !== id);
+          dataCache.getHeroes = heroList.filter((hero) => hero.id !== id);
+          console.log("AFTER:", heroList);
           proxy.writeQuery({ query: GET_HEROES, data: dataCache });
         },
       }
