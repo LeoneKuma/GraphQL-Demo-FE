@@ -28,7 +28,7 @@
      7. 配置文件的命名，选默认
      8. 选择运行转换功能，输出ts文件的srcipt名称,eg:parsegql
 
-4. 删除package.json文件中，在init过程中生成的依赖 "@graphql-codegen/typescript": "0.0.0"
+4. 删除package.json文件中，在init过程中生成的dev依赖 "@graphql-codegen/typescript": "0.0.x"
 5. 删除codegen.yml配置文件中的documents: "src/**/*.graphql"
 
 6. 确保后端schema能正常访问，例如后端demo的schema地址是<http://localhost:3000/graphql>,之后运行脚本
