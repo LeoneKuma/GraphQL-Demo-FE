@@ -11,7 +11,7 @@
 1. 安装依赖
 
    - 首先确保安装了graphql:`cnpm i --save graphql`
-   - 接着安装脚手架CLI:`cnpm i --save @graphql-code/cli`
+   - 接着安装脚手架CLI:`cnpm i --save @graphql-codegen/cli`
    - 最后安装一个之后用到的插件:`cnpm i --save @graphql-codegen/typescript`
 
 2. 由于CLI不是全局安装，所以在package.json处添加script确保能运行:`"init":"graphql-codegen init"`
