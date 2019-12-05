@@ -36,37 +36,40 @@ export class HeroService {
   }
 
 
-  // async getHero(id: number): Promise<Hero> {
-  //   const res = await this.apollo.watchQuery<any>(
+
+  // 这个方法可以用于绑定响应式的数据
+  // getHero(id: number): Observable<Hero> {
+  //   const res = this.apollo.watchQuery<Query>(
   //     {
   //       query: GET_HERO,
   //       variables: {
   //         id
   //       },
   //     }
-  //   ).result();
-  //   return res.data.getHero;
+  //   ).valueChanges.pipe(
+  //     map<ApolloQueryResult<Query>, Hero>(
+  //       ({ data }) => {
+  //         return data.getHero;
+  //       }
 
+  //     )
+  //   );
+  //   res.subscribe(data => {
+  //   })
+  //   return res;
   // }
-  getHero(id: number): Observable<Hero> {
-    const res = this.apollo.watchQuery<Query>(
+
+  // 这个方法可以通过await直接获取一个英雄实体
+  async getHero(id: number): Promise<Hero> {
+    const res = await this.apollo.watchQuery<Query>(
       {
         query: GET_HERO,
         variables: {
           id
         },
       }
-    ).valueChanges.pipe(
-      map<ApolloQueryResult<Query>, Hero>(
-        ({ data }) => {
-          return data.getHero;
-        }
-
-      )
-    );
-    res.subscribe(data => {
-    })
-    return res;
+    ).result();
+    return res.data.getHero;
 
   }
   async deleteHero(id: number): Promise<boolean> {

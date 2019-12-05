@@ -12,8 +12,8 @@ import { Observable, of } from 'rxjs';
   styleUrls: ['./hero-detail.component.styl']
 })
 export class HeroDetailComponent implements OnInit {
-  // hero: Hero;
-  hero: Observable<Hero>;
+  hero: Hero;
+  // hero: Observable<Hero>;
   constructor(
     private route: ActivatedRoute,
     private heroService: HeroService,
@@ -23,20 +23,19 @@ export class HeroDetailComponent implements OnInit {
   ngOnInit() {
     this.getHero();
   }
-  getHero(): void {
+  async getHero(): Promise<void> {
     const id = +this.route.snapshot.paramMap.get('id');
-    //this.hero = of({ id: 1, name: "hans", description: "aasas" });
-    this.hero = this.heroService.getHero(id);
+    this.hero =await this.heroService.getHero(id);
   }
   goBack(): void {
     this.location.back();
   }
-  save({ id, name, description }): void {
-    // const heroDetail: HeroDetailInput = { id, name, description };
-    // this.heroService.updateHero(heroDetail).then(
-    //   () => {
-    //     this.goBack();
-    //   })
+  save(): void {
+    const heroDetail: HeroDetailInput = { id: this.hero.id, name: this.hero.name, description: this.hero.description };
+    this.heroService.updateHero(heroDetail).then(
+      () => {
+        this.goBack();
+      })
   }
 
 
