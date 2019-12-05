@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 //     description: string;
 // }
 export const GET_HEROES = gql`
-query getHeroes{
+query{
     getHeroes{
       id,
       name,
