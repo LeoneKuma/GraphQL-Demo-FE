@@ -1,7 +1,6 @@
-<div *ngIf="hero">
+<div *ngIf="hero|async">
     <div>
-        <span>Test:</span>
-        <span>{{hero|async}}</span>
+        <span>{{(hero|async)?.name}}</span>
     </div>
     <h2>{{hero.name |uppercase}} Details</h2>
     <div><span>id: </span>{{hero.id}}</div>

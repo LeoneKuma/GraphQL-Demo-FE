@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HeroDetailInput } from '../api-gql/output';
 import { HeroService } from '../hero.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-hero-detail',
@@ -25,6 +25,7 @@ export class HeroDetailComponent implements OnInit {
   }
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
+    //this.hero = of({ id: 1, name: "hans", description: "aasas" });
     this.hero = this.heroService.getHero(id);
   }
   goBack(): void {

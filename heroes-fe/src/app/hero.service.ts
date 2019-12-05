@@ -8,7 +8,7 @@ import { GET_HEROES, GET_HERO, ADD_HERO, DELETE_HERO, UPDATE_HERO } from './api-
 import { escapeRegExp } from '@angular/compiler/src/util';
 import { ApolloCurrentResult, ApolloQueryResult } from 'apollo-client';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-import { HeroDetailInput, Hero } from './api-gql/output'
+import { HeroDetailInput, Hero, Query } from './api-gql/output'
 @Injectable({
   providedIn: 'root'
 })
@@ -21,16 +21,15 @@ export class HeroService {
     private apollo: Apollo
   ) { }
 
-  getHeroes(num: number = 100): Observable<any> {
-    return this.apollo.watchQuery(
+  getHeroes(num: number = 100): Observable<Hero[]> {
+    return this.apollo.watchQuery<Query>(
       {
         query: GET_HEROES,
         fetchPolicy: 'network-only'
       }).valueChanges.pipe(
-        map<any, any>(
+        map<ApolloQueryResult<Query>, Hero[]>(
           ({ data }) => {
-            const heroes: Hero[] = data.getHeroes;
-            return heroes.filter((item, index) => index >= 0 && index <= num)
+            return data.getHeroes.filter((item, index) => index >= 0 && index <= num)
           }
         )
       );
@@ -50,7 +49,7 @@ export class HeroService {
 
   // }
   getHero(id: number): Observable<Hero> {
-    const res = this.apollo.watchQuery<Hero>(
+    const res = this.apollo.watchQuery<Query>(
       {
         query: GET_HERO,
         variables: {
@@ -58,17 +57,14 @@ export class HeroService {
         },
       }
     ).valueChanges.pipe(
-      map<ApolloQueryResult<any>, Hero>(
+      map<ApolloQueryResult<Query>, Hero>(
         ({ data }) => {
-          const hero: Hero = data.getHero;
-          console.log(hero);
-          return hero;
+          return data.getHero;
         }
+
       )
     );
-    console.log(res)
     res.subscribe(data => {
-      console.log("111",data);
     })
     return res;
 
